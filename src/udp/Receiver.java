@@ -47,7 +47,6 @@ public class Receiver {
                 DatagramPacket ackPacket = new DatagramPacket(ackBytes, ackBytes.length, recPkt.getAddress(), recPkt.getPort());
                 // Manda o ACK
                 serverSocket.send(ackPacket);
-                System.out.println("Mandando o ACK");
             }
 
         } catch (IOException e) {

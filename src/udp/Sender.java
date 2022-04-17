@@ -38,12 +38,13 @@ public class Sender {
             System.out.println("5 - Normal");
 
             String escolha = entrada.next();
+
             if (!Objects.equals(escolha, "3")) {
                 String[] esc = {"Lento", "Perda", "Fora de Ordem", "Duplicada", "Normal"};
                 System.out.println("Mensagem " + escolha + " enviada como "+ esc[Integer.parseInt(escolha) - 1] +" com id " + nextSeqNum);
             }
             if (nextSeqNum - sendBase < WINDOW) {
-
+                // Escolha Lentidão: aciona uma thread com um temporizador simulando um atraso, e caindo no timeout
                 if (Objects.equals(escolha, "1")) {
 
                     Mensagem mensagem1 = new Mensagem(nextSeqNum, data);
@@ -58,12 +59,12 @@ public class Sender {
 
                 } else {
                     Mensagem mensagem1 = new Mensagem(nextSeqNum, data);
-
+                    // Seta um nextSeqNum diferente do atual, simulando um pacote fora de ordem
                     if (Objects.equals(escolha, "3")) {
                         Random rand = new Random();
                         int numSq = nextSeqNum + 1 + rand.nextInt(10);
                         mensagem1.setNumSeq(numSq);
-                        System.out.println("Mensagem " + escolha + "enviada como Fora de Ordem com id " + numSq);
+                        System.out.println("Mensagem " + escolha + " enviada como Fora de Ordem com id " + numSq);
                     }
 
                     byte[] sndPacket = mensagem1.mensagemToString().getBytes();
@@ -72,13 +73,14 @@ public class Sender {
                     packetSent.add(mensagem1);
 
                     DatagramPacket sendPacket = new DatagramPacket(sndPacket, sndPacket.length, IPAdress, 9876);
-
+                    // Se a escolhar for diferente de 2 (perda) irá mandar o pacote, normalmente (opção 5), caso contrário, não).
                     if (!Objects.equals(escolha, "2")) {
                         // Manda o pacote
                         clientSocket.send(sendPacket);
                     }
+                    // Mandando o pacote duplicadamente para o Receiver
                     if (Objects.equals(escolha, "4")) {
-                        // Manda o pacote
+                        // Manda o pacote no caso duplicado
                         clientSocket.send(sendPacket);
                     }
 

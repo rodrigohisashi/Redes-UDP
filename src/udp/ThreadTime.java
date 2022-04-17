@@ -1,11 +1,8 @@
 package udp;
 
-import com.sun.xml.internal.bind.v2.runtime.output.StAXExStreamWriterOutput;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
 
 public class ThreadTime extends Thread {
 
